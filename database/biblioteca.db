@@ -1,0 +1,61 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Database {
+
+    // Conectar ao banco de dados SQLite
+    public static Connection connect() {
+        try {
+            // Caminho do banco de dados
+            String url = "jdbc:sqlite:database/biblioteca.db";
+            return DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println("Erro ao conectar com o banco de dados: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // Inicializar as tabelas no banco de dados
+    public static void inicializarTabelas() {
+        try (Connection conn = connect()) {
+            if (conn != null) {
+                String sqlUsuarios = "CREATE TABLE IF NOT EXISTS usuarios (" +
+                                      "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                      "nome TEXT, " +
+                                      "endereco TEXT, " +
+                                      "telefone TEXT);";
+                String sqlLivros = "CREATE TABLE IF NOT EXISTS livros (" +
+                                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                    "titulo TEXT, " +
+                                    "autor TEXT, " +
+                                    "editora TEXT, " +
+                                    "ano_publicacao INTEGER, " +
+                                    "quantidade_disponivel INTEGER);";
+                String sqlEmprestimos = "CREATE TABLE IF NOT EXISTS emprestimos (" +
+                                        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                        "usuario_id INTEGER, " +
+                                        "livro_id INTEGER, " +
+                                        "data_emprestimo DATE, " +
+                                        "data_devolucao DATE, " +
+                                        "status TEXT);";
+                String sqlHistorico = "CREATE TABLE IF NOT EXISTS historico_emprestimos (" +
+                                      "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                      "usuario_id INTEGER, " +
+                                      "livro_id INTEGER, " +
+                                      "data_emprestimo DATE, " +
+                                      "data_devolucao DATE, " +
+                                      "status TEXT);";
+                Statement stmt = conn.createStatement();
+                stmt.execute(sqlUsuarios);
+                stmt.execute(sqlLivros);
+                stmt.execute(sqlEmprestimos);
+                stmt.execute(sqlHistorico);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao inicializar tabelas: " + e.getMessage());
+        }
+    }
+}
+
