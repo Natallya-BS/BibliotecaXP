@@ -9,8 +9,4 @@ Sistema de gerenciamento de biblioteca com funcionalidades de cadastro de usuár
 3. **Empréstimos de Livros**: Registro e controle dos empréstimos, com verificação de livros atrasados.
 4. **Histórico de Empréstimos**: Registro de todos os empréstimos realizados.
 
-## Como rodar o sistema
-1. Certifique-se de ter o JDK instalado.
-2. Compile o código com o comando:
-   ```bash
-   javac *.java
+
